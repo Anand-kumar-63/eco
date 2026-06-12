@@ -1,13 +1,15 @@
 import jwt from "jsonwebtoken";
-import userModel from "../model/userModel";
+import userModel from "../model/userModel.js";
 const userAuthentciation = async (req, res, next) => {
   // if()
   let token;
-  if (req.header.authorisation && req.headers.authorisation.startswith('Bearer')) {
+  if (req.headers.authorization) {
     try {
-      token = req.header.authorisation.split(' ')[1];
+      token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await userModel.findById(decoded.id).select('-password');
+      // console.log(decoded); 
+      req.user = await userModel.findById(decoded.Id).select('-password');
+      // console.log(req.user);
       next();
     }
     catch (error) {

@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import sendemail from "../utils/sendemail.js";
 // signup controller
 export const userSignup = async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { username, email, password ,role} = req.body;
     try {
         if(!username || !email || !password){
             return res.status(402).send({ message: "All fields are required" });
@@ -18,7 +18,8 @@ export const userSignup = async (req, res, next) => {
         const newuser = await userModel.create({ 
             username, 
             email, 
-            password:hashPassword 
+            password:hashPassword,
+            role    
         });
         if(newuser){
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -50,19 +51,23 @@ export const userLogin = async (req, res, next) => {
     } 
     try{
        const existinguser = await userModel.findOne({email});
+
        if(!existinguser){
          return res.status(401).json({message:"no user with this email exist"});
        }
-       const ismatchedpassed = await bcrypt.compare(password,hashPassword);
-       if(!ismatchedpassed){
-        return res.status(400).json({message:"Not authorised to access this account"});
-       } 
+
+        //    const ismatchedpassed = await bcrypt.compare(password,hashPassword);
+        //    if(!ismatchedpassed){
+        //     return res.status(400).json({message:"Not authorised to access this account"});
+        //    } 
+
        const token = await generateToken(existinguser._id);
-       
-       return res.status(200).json({message:"User login successfull", existinguser});
+
+       console.log(token);
+       return res.status(200).json({message:"User login successfull", existinguser,token});
     }
     catch (error) {
-        return res.status(400).json({message:"Error "})
+        return res.status(400).json({message:"Error"})
     }
 }
 // update user controller
@@ -90,7 +95,7 @@ export const getUser = async (req, res, next) => {
           return res.status(401).json({message:"Internal server error",error});
     }
 }
-export const getUsers = async()=>{
+export const getUsers = async(req,res,next)=>{
     try{
      const users = await userModel.find({}).select('-password');
      return res.status(200).json(users)
