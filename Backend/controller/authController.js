@@ -23,7 +23,7 @@ export const userSignup = async (req, res, next) => {
         if(newuser){
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             const message = `welcome to test ${username} your otp is ${otp}`;
-            await sendEmail(email, 'welcome to shopnest - your OTP for registration', message);
+            await sendemail(email, 'welcome to shopnest - your OTP for registration', message);
 
             const userResponse = {
                 _id: newuser._id,
@@ -91,6 +91,16 @@ export const getUser = async (req, res, next) => {
     }
     catch (error) {
           return res.status(401).json({message:"Internal server error",error});
+    }
+}
+
+export const getUsers = async()=>{
+    try{
+     const users = await userModel.find({}).select('-password');
+     return res.status(200).json(users)
+    } 
+    catch(error){
+        return res.status(401).json({message:"Internal server Error",error});
     }
 }
 
