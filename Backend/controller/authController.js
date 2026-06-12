@@ -23,8 +23,7 @@ export const userSignup = async (req, res, next) => {
         if(newuser){
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             const message = `welcome to test ${username} your otp is ${otp}`;
-            await sendemail(email, 'welcome to shopnest - your OTP for registration', message);
-
+            // await sendemail(email, 'welcome to shopnest - your OTP for registration', message);
             const userResponse = {
                 _id: newuser._id,
                 username: newuser.username,
@@ -33,7 +32,7 @@ export const userSignup = async (req, res, next) => {
             return res.status(200).json({ message: "User created succesfully" , userResponse , usertoken: generateToken(newuser._id) });
         }
         else{
-            return res.status(400).json({ message: "Error in creating user" });
+            return res.status(400).json({ message: "Error in creating user"});
         }
     }
     catch(error){
@@ -59,6 +58,7 @@ export const userLogin = async (req, res, next) => {
         return res.status(400).json({message:"Not authorised to access this account"});
        } 
        const token = await generateToken(existinguser._id);
+       
        return res.status(200).json({message:"User login successfull", existinguser});
     }
     catch (error) {
@@ -72,12 +72,9 @@ export const userLogin = async (req, res, next) => {
 //         const Existinguser = await userModel.findOne({email});
 //         const updateduser = await userModel.findByIdAndUpdate({
 //             email,
-            
 //         })
-
 //     }
 //     catch(error){
-       
 //     }
 // }
 export const getUser = async (req, res, next) => {
@@ -93,7 +90,6 @@ export const getUser = async (req, res, next) => {
           return res.status(401).json({message:"Internal server error",error});
     }
 }
-
 export const getUsers = async()=>{
     try{
      const users = await userModel.find({}).select('-password');
