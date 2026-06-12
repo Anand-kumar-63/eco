@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
-import React from 'react'
-const sendemail = ({ email, subject , message }) => {
+// import React from 'react'
+const sendemail = async({ email, subject , message }) => {
     try {
         const transaporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -12,16 +12,18 @@ const sendemail = ({ email, subject , message }) => {
             },
         })
         const mailOptions = {
-            from: `"ShopNest Support" <${process.env.GMAIL_USER}>`,
+            from: `"ShopNest Support" <${process.env.SMTP_USER}>`,
             to: email,
             subject: subject,
             html: message,
         };
-
-
+       const info = await transaporter.sendMail(mailOptions);
+       console.log("Email sent", info.messageId);
+       return info;
     }
     catch (error) {
-
+       console.error("Email sending failed" , error);
+       throw error;
     }
 }
 export default sendemail;
