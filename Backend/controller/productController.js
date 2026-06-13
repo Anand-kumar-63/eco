@@ -1,6 +1,12 @@
 import Productmodel from "../model/product.js";
-import cloudinary from "cloudinary";
-
+// import cloudinary from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary'
+cloudinary.config({
+    secure: true,
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret
+});
 export const getProducts = async (req, res, next) => {
     try {
         const products = await Productmodel.find({});
@@ -23,41 +29,62 @@ export const getProduct = async (req, res) => {
 }
 
 export const createProducts = async (req, res) => {
-    const { name, description, price, category, reviews } = req.body;
-
-    if(!name || !description ||!price || !category ||!reviews){
-        return res.status(402).json({message:"Invalid details"});
+    const { name, description, price, category, reviews, stock } = req.body;
+    if (!name || !description || !price || !category || !reviews || !stock) {
+        return res.status(402).json({ message: "Invalid details" });
     }
-    let ImageURL = " ";
+    console.log(req.file);
+    console.log("CreateProduct");
+    let imageURl = " ";
     try {
-        if (req.file) {
-            const source = await cloudinary.uploader.upload(req.file.path);
-            ImageURL = source.secure_url;
+        if(req.file){
+            const source = await cloudinary.v2.uploader.upload(req.file.path);
+            imageURl = source.secure_url;
         }
         const productdata = {
-            name, description, price, category, reviews, imageURL
+            name, description, price, category, imageURl ,reviews, stock
         }
         const product = await Productmodel.create(productdata);
         return res.status(200).json(product);
-    } catch (error) {
+    }catch(error){
+        return res.status(401).json({ message: "Internal server error", error });
+    }}
 
+export const updateProduct = async (req, res) => {
+    const { name, description, price, category, reviews, stock } = req.body;
+    try {
+        const product = await Productmodel.findById(req.params.Id);
+        if (product) {
+            product.name = name || product.name;
+            product.description = description || product.description;
+            product.price = price || product.price;
+            product.category = category || product.category;
+            product.reviews = reviews || product.reviews;
+            product.stock = stock || product.stock;
+            if (req.file) {
+                const source = await cloudinary.v2.uploader.upload(req.file.path).then(result => console.log(result));
+                product.imageURl = source.secure_url;
+            }
+            const updatedProduct = await product.save();
+            return res.status(200).json({ messgae: "product updated succesfullly", updatedProduct });
+        } else {
+            return res.status(401).json({ message: "Product Doesn't Exist" });
+        }
+    }
+    catch (error) {
+        return res.status(400).json({ message: "Product update failed", error });
     }
 }
-
-export const updateProduct = async(req,res)=>{
-   const { name , description , price , category , reviews  } = req.body;
-   try{
-       
+export const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      await product.deleteOne();
+      res.json({ message: 'Product removed' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  catch(error){
-    return res.status(400).json({ message:"Product update failed",error});
-  }
-}
-
-export const deleteProduct = async(req,res)=>{
-  try{
-
-  }catch(error){
-
-  }
-}
+};

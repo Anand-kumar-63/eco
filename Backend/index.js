@@ -14,18 +14,12 @@
     app.use(express.urlencoded({extended:true}));
     const PORT = process.env.PORT || 5000;
 
-
-
-
-
-
-
     app.post("/multer",upload.single("file"),(req,res)=>{
          return res.status(200).send("file uploaded successfully");
     })
-    
+
     app.use("/api/auth",router);
-    app.use("/api/product",router);
+    app.use("/api/product",productRouter);
     app.get("/", (req, res) => {
         res.send("hey the server is working");
     });
