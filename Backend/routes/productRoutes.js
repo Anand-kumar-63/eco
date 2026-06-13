@@ -6,10 +6,14 @@ import multer from "multer";
 const productRouter = expess.Router();
 const upload =  multer({dest:"./uploads"});
 
-productRouter.post("/" , userAuthentciation , adminMiddlware , upload.single('image') , createProducts);
-productRouter.get("/:Id", userAuthentciation , getProduct );
-productRouter.get("/products", userAuthentciation ,adminMiddlware , getProducts);
-productRouter.post("/update/:Id", userAuthentciation, upload.single('image') , updateProduct);
+productRouter.post("/" , userAuthentciation , adminMiddlware , upload.single('file') , createProducts);
+
+productRouter.get("/:Id",userAuthentciation ,getProduct );
+
+productRouter.get("/products",userAuthentciation,adminMiddlware,getProducts);
+
+productRouter.post("/update/:Id",userAuthentciation,upload.single('image'),updateProduct);
+
 productRouter.post("/delete/:Id", userAuthentciation , adminMiddlware  , deleteProduct);
 
 export default productRouter;

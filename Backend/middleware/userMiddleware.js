@@ -10,6 +10,7 @@ const userAuthentciation = async (req, res, next) => {
       // console.log(decoded); 
       req.user = await userModel.findById(decoded.Id).select('-password');
       // console.log(req.user);
+      console.log(req.user);
       next();
     }
     catch (error) {
