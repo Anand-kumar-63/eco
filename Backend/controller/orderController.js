@@ -1,6 +1,6 @@
 import OrderModel from "../model/orderModel.js";
 import userModel from "../model/userModel.js";
-import orderRouter from "../routes/orderRouter";
+import orderRouter from "../routes/orderRouter.js";
 import sendemail from "../utils/sendemail.js";
 
 export const createOrder = async (req, res, next) => {

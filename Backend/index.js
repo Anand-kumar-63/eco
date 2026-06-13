@@ -1,6 +1,6 @@
     import dotenv from "dotenv";
     dotenv.config(); // ✅ Must be first before any module reads process.env
-
+    import orderRouter from "./routes/orderRouter.js";
     import express from "express";
     import cors from "cors";
     import connectDB from "./database/Dbconnect.js";
@@ -11,6 +11,7 @@
     app.use(express.json());
     app.use(express.urlencoded({extended:true}));
     const PORT = process.env.PORT || 5000;
+    app.use("/api/Order",orderRouter);
     app.use("/api/auth",router);
     app.use("/api/product",productRouter);
     app.get("/", (req, res) => {
