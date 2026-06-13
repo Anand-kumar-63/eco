@@ -70,18 +70,17 @@ export const userLogin = async (req, res, next) => {
         return res.status(400).json({message:"Error"})
     }
 }
-// update user controller
-// export const userUpdate = async (req, res, next) => {
-//     const { username , email , } = req.body;
-//     try{
-//         const Existinguser = await userModel.findOne({email});
-//         const updateduser = await userModel.findByIdAndUpdate({
-//             email,
-//         })
-//     }
-//     catch(error){
-//     }
-// }
+export const userUpdate = async (req, res, next) => {
+    const { username , email , } = req.body;
+    try{
+        const Existinguser = await userModel.findOne({email});
+        const updateduser = await userModel.findByIdAndUpdate({
+            email,
+        })
+    }
+    catch(error){
+    }
+}
 export const getUser = async (req, res, next) => {
     const { email } = req.body;
     try{

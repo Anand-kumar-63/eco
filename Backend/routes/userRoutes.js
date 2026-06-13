@@ -8,5 +8,6 @@ router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.get("/user", userMiddleware , getUser);
 router.get("/users", userMiddleware , adminMiddlware , getUsers);
+// router.post("/verify-email",)
 // router.post("/update" , userUpdate);
 export default router;
