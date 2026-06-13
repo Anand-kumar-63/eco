@@ -6,8 +6,8 @@ const orderRouter = express.Router();
 
 orderRouter.post("/" , userAuthentciation , createOrder);
 orderRouter.get("/:Id", userAuthentciation , getorderById);
-orderRouter.get("/" , userAuthentciation , getOrders);
+orderRouter.get("/" , userAuthentciation ,adminMiddlware , getOrders);
 orderRouter.post("/delete/:Id", userAuthentciation , deleteOrderbyId);
-orderRouter.post("/update/:Id", userAuthentciation , updateOrderstatus);
+orderRouter.post("/status/:Id", userAuthentciation , updateOrderstatus);
 
 export default orderRouter;

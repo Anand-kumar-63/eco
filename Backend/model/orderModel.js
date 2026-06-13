@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import orderRouter from "../routes/orderRouter";
 const orrderSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
@@ -21,7 +20,12 @@ const orrderSchema = new mongoose.Schema({
         postalCode: { type: String, required: true },
         country: { type: String, required: true }
     },
-    PaymentId: { type: String, required: true }
+    PaymentId: { type: String, required: true },
+    status:{
+        type:String,
+        enum:["shipped","delivered","pending"],
+        default:"pending"
+    }
 }, { timestamps: true });
 
 const OrderModel = mongoose.model("Order",orrderSchema);
