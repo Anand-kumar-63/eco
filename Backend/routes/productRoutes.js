@@ -4,7 +4,7 @@ import { createProducts , getProduct , updateProduct , deleteProduct, getProduct
 import expess from "express";
 import multer from "multer";
 const productRouter = expess.Router();
-const upload =  multer({dest:"./uploads"});
+const upload = multer({ storage: multer.memoryStorage() }); // ✅ buffer in memory, no disk path issues
 
 productRouter.post("/" , userAuthentciation , adminMiddlware , upload.single('file') , createProducts);
 
