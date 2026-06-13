@@ -34,9 +34,9 @@ export const getProducts = async (req, res, next) => {
 }
 
 export const getProduct = async (req, res) => {
-    const { Id } = req.body;
+    const { Id } = req.params;
     try {
-        const product = await Productmodel.findOne({ Id });
+        const product = await Productmodel.findById(Id);
         if (!product) {
             return res.status(400).json({ message: "No product exist for this Id" });
         }
@@ -64,6 +64,7 @@ export const createProducts = async (req, res) => {
             imageURl
         };
         const product = await Productmodel.create(productdata);
+        console.log(product);
         return res.status(200).json(product);
     } catch (error) {
         console.error("CLOUDINARY ERROR:", error);
@@ -100,7 +101,7 @@ export const updateProduct = async (req, res) => {
 }
 export const deleteProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.Id);
         if (product) {
             await product.deleteOne();
             res.json({ message: 'Product removed' });

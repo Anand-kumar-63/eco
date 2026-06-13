@@ -11,14 +11,11 @@
     app.use(express.json());
     app.use(express.urlencoded({extended:true}));
     const PORT = process.env.PORT || 5000;
-
     app.use("/api/auth",router);
     app.use("/api/product",productRouter);
-    
     app.get("/", (req, res) => {
         res.send("hey the server is working");
     });
-
     connectDB().then(() => {
         app.listen(PORT, () => {
             console.log(`server is running on the port: ${PORT}`);

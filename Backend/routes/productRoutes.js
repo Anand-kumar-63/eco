@@ -6,14 +6,14 @@ import multer from "multer";
 const productRouter = expess.Router();
 const upload = multer({ storage: multer.memoryStorage() }); // ✅ buffer in memory, no disk path issues
 
-productRouter.post("/" , userAuthentciation , adminMiddlware , upload.single('file') , createProducts);
+productRouter.post("/",userAuthentciation,adminMiddlware,upload.single('file') , createProducts);
 
-productRouter.get("/:Id",userAuthentciation ,getProduct );
+productRouter.get("/:Id",userAuthentciation,getProduct );
 
 productRouter.get("/products",userAuthentciation,adminMiddlware,getProducts);
 
 productRouter.post("/update/:Id",userAuthentciation,upload.single('image'),updateProduct);
 
-productRouter.post("/delete/:Id", userAuthentciation , adminMiddlware  , deleteProduct);
+productRouter.post("/delete/:Id", userAuthentciation , adminMiddlware , deleteProduct);
 
 export default productRouter;
