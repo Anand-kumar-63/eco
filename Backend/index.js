@@ -7,10 +7,8 @@ import cors from "cors";
 import connectDB from "./database/Dbconnect.js";
 import router from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
-import { analyticsRouter } from "./routes/analyticsRoutes.js";
-
+import  analyticsRouter  from "./routes/analyticsRoutes.js";
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 app.use(multer().none());
