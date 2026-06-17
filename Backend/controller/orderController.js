@@ -4,7 +4,8 @@ import orderRouter from "../routes/orderRouter.js";
 import sendemail from "../utils/sendemail.js";
 
 export const createOrder = async (req, res, next) => {
-    try {
+    try {   
+        console.log(req.body);
         const { items, totalAmount, address, PaymentId } = req.body;
         if (items.length == 0 || !totalAmount || !address || !PaymentId) {
             return res.status(400).json({ message: "Invalid values" });
@@ -18,7 +19,7 @@ export const createOrder = async (req, res, next) => {
         }
         const neworder = await OrderModel.create(userObject);
         const message = `Dear ${req.user} you order created succesfulyy`;
-        await sendemail(req.user.email, "order created", message);
+        // await sendemail(req.user.email, "order created", message);
         return res.status(200).json({ message: "Order created successfully", neworder })
     }
     catch (error) {
@@ -61,7 +62,7 @@ export const getMyOrder = async (req, res) => {
 
 export const deleteOrderbyId = async (req, res) => {
     try {
-        const deleteorder = await OrderModel.deleteOrderbyId(req.params.Id);
+        const deleteorder = await OrderModel.deleteOne({_id:req.params.Id});
         return res.send("order deleted");
     }
     catch (error) {
