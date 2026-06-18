@@ -1,6 +1,26 @@
 {
+  "name": "rev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:backend":"cd backend && npm run dev",
+    "dev:client":"cd frontend/vite-project && npm run dev",
+    "dev":"concurrently \"npm run dev:backend\" \"npm run dev:client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anand-kumar-63/eco.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Anand-kumar-63/eco/issues"
+  },
+  "homepage": "https://github.com/Anand-kumar-63/eco#readme",
   "dependencies": {
-    "multer": "^2.1.1",
-    "react-router-dom": "^7.18.0"
+    "concurrently": "^10.0.3"
   }
 }
